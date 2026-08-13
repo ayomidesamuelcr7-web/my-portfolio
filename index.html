@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adetayo Samuel - UI/UX & Product Designer</title>
+
+    <!-- Google Fonts: Instrument Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons for Skills/Tools -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-circle"></div>
+        </div>
+
+        <nav class="desktop-nav">
+            <a href="#home" class="active">Home</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <a href="#" class="btn btn-outline nav-resume">Resume &darr;</a>
+
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="ph ph-list"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav">
+            <a href="#home">Home</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="#" class="btn btn-outline">Resume &darr;</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg">
+            <img src="assets/hero-bg.png" alt="Setup Background">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <p class="greeting">Hello there!</p>
+            <h1 class="hero-title">
+                I'm <span class="highlight">Adetayo Samuel</span>, an<br>
+                expert in UI/UX, Web Development,<br>
+                and Product Design based in<br>
+                Nigeria.
+            </h1>
+            <p class="hero-subtitle">
+                I bridge complex backend logic with seamless<br>
+                user experiences, crafting intuitive digital<br>
+                product from concept to launch
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">Explore my work &darr;</a>
+                <a href="#projects" class="btn btn-outline dark">Explore work &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="projects" class="featured-products section-container">
+        <div class="section-header">
+            <h2 class="section-title">Featured Products</h2>
+            <a href="#" class="view-all">View all projects</a>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Project 1: Quiklyy -->
+            <article class="project-card">
+                <div class="project-image">
+                    <img src="assets/quiklyy-mockup.png" alt="Quiklyy Mobile App">
+                </div>
+                <div class="project-info">
+                    <div class="project-meta">
+                        <h3>QUIKLYY</h3>
+                        <span class="category">MOBILE APP</span>
+                    </div>
+                    <p class="project-desc">A hyper-local app connecting consumers with discounted surplus food to
+                        reduce waste</p>
+                    <div class="project-role">
+                        <h4>ROLE</h4>
+                        <p>UI/UX Designer</p>
+                    </div>
+                    <a href="#" class="btn btn-block btn-outline">View Case Study</a>
+                </div>
+            </article>
+
+            <!-- Project 2: STEM SET -->
+            <article class="project-card">
+                <div class="project-image">
+                    <img src="assets/stem-set-mockup.png" alt="STEM SET Branding">
+                </div>
+                <div class="project-info">
+                    <div class="project-meta">
+                        <h3>STEM SET</h3>
+                        <span class="category">BRANDING</span>
+                    </div>
+                    <p class="project-desc">A portable physics toolbox that makes hands-on learning accessible anywhere.
+                    </p>
+                    <div class="project-role">
+                        <h4>ROLE</h4>
+                        <p>Product Designer</p>
+                    </div>
+                    <a href="#" class="btn btn-block btn-outline">View Case Study</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Skills & Capabilities Section -->
+    <section id="skills" class="skills-capabilities section-container">
+        <h2 class="section-title">Skills & Capabilities</h2>
+
+        <!-- UI/UX Designer -->
+        <div class="skill-category">
+            <h3 class="category-title">UI/UX Designer</h3>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-bezier-curve"></i></div>
+                    <span>Design Systems</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-stack"></i></div>
+                    <span>Visual Hierarchy</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-cursor-click"></i></div>
+                    <span>Micro-Interactions</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-devices"></i></div>
+                    <span>High-Fidelity Prototyping</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Web Development -->
+        <div class="skill-category">
+            <h3 class="category-title">Web Development</h3>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-code"></i></div>
+                    <span>Frontend Development</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-database"></i></div>
+                    <span>Backend Integration</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-brackets-curly"></i></div>
+                    <span>API Development</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-git-branch"></i></div>
+                    <span>Version Control</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Design -->
+        <div class="skill-category">
+            <h3 class="category-title">Product Design</h3>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-lightbulb"></i></div>
+                    <span>Product Strategy</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-users"></i></div>
+                    <span>User Research</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-tree-structure"></i></div>
+                    <span>Information Architecture</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ph ph-chart-bar"></i></div>
+                    <span>Data-Driven Design</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools section-container">
+        <h2 class="section-title">Tools</h2>
+        <div class="tools-grid">
+            <div class="tool-item">
+                <i class="ph-fill ph-figma logo-icon figma"></i>
+                <span>Figma</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-triangle logo-icon adalo"></i>
+                <span>Adalo</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-intersect logo-icon framer"></i>
+                <span>Framer</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-github-logo logo-icon github"></i>
+                <span>Github</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-database logo-icon supabase"></i>
+                <span>Supabase</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-rocket logo-icon antigravity"></i>
+                <span>Antigravity IDE</span>
+            </div>
+            <div class="tool-item">
+                <i class="ph-fill ph-pinterest-logo logo-icon pinterest"></i>
+                <span>Pinterest</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section-container">
+        <div class="about-content">
+            <h2 class="section-title">About Me</h2>
+            <p class="about-text">
+                I’m a UI/UX designer and developer passionate about turning ideas into simple, intuitive, and impactful digital experiences. I enjoy solving real world problems through thoughtful design and building products that are both functional and visually engaging.
+            </p>
+            <div class="about-decor"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section-container">
+        <div class="contact-content">
+            <h2 class="contact-title">Let's work together.</h2>
+            <p class="contact-subtitle">Currently available for freelance opportunities and full-time roles.</p>
+            <a href="mailto:hello@example.com" class="btn btn-primary contact-btn">Get in touch &rarr;</a>
+        </div>
+        
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#"><i class="ph ph-linkedin-logo"></i> LinkedIn</a>
+                <a href="#"><i class="ph ph-twitter-logo"></i> Twitter</a>
+                <a href="#"><i class="ph ph-dribbble-logo"></i> Dribbble</a>
+            </div>
+            <p class="copyright">&copy; 2026 Adetayo Samuel.</p>
+        </footer>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
