@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize EmailJS
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init("wV_3uog0MfiqwuYiq");
+    }
+
     const SUPABASE_URL = 'https://rfcotftdxmjsoilekran.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_wYBjlZZhtZraifP6-7lM_A_96aGzdSH';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -266,10 +271,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         verifyModalUI.style.display = 'flex';
         
-        // Simulate email being sent
-        setTimeout(() => {
-            alert(`[SIMULATED EMAIL]\nTo: ${emailToVerify}\n\nYour verification code is: ${expectedVerifyCode}`);
-        }, 500);
+        // Send real email via EmailJS
+        emailjs.send("service_wryi6iq", "template_wqmwmf2", {
+            to_email: emailToVerify,
+            code: expectedVerifyCode
+        }).then(
+            function(response) {
+                console.log("Verification email sent successfully!", response.status, response.text);
+            },
+            function(error) {
+                console.error("Failed to send verification email...", error);
+                alert("Failed to send verification email. Please check the console for details.");
+            }
+        );
     }
 
     if(btnCancelVerify) {
