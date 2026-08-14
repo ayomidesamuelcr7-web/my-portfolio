@@ -13,6 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Authentication Logic
     const isAuthenticated = localStorage.getItem('admin_auth') === 'true';
 
+    // Fetch dynamic credentials from localStorage or use defaults
+    let currentAdminEmail = localStorage.getItem('admin_email') || 'admin@example.com';
+    let currentAdminPassword = localStorage.getItem('admin_password') || 'admin123';
+
+    // Populate the settings form with current email when app starts
+    const settingsEmailInput = document.getElementById('settings-email');
+    if (settingsEmailInput) {
+        settingsEmailInput.value = currentAdminEmail;
+    }
+
     if (isAuthenticated) {
         showApp();
     }
@@ -22,11 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailInput = document.getElementById('email-login').value;
         const pwd = passwordInput.value;
         
-        if (emailInput === 'admin@example.com' && pwd === 'admin123') {
+        if (emailInput === currentAdminEmail && pwd === currentAdminPassword) {
             localStorage.setItem('admin_auth', 'true');
             showApp();
         } else {
-            loginError.textContent = 'Incorrect email or password. Try admin@example.com / admin123';
+            // Fixed security issue: never reveal the expected credentials in the error message!
+            loginError.textContent = 'Incorrect email or password.';
             passwordInput.value = '';
         }
     });
@@ -236,6 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Forms (Settings)
     document.getElementById('settings-form').addEventListener('submit', (e) => {
         e.preventDefault();
+        
+        // Save new email to local storage
+        if (settingsEmailInput) {
+            currentAdminEmail = settingsEmailInput.value;
+            localStorage.setItem('admin_email', currentAdminEmail);
+        }
+
         const btn = e.target.querySelector('button');
         btn.textContent = 'Saved!';
         btn.style.backgroundColor = '#10b981'; // Green
@@ -247,8 +265,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('security-form').addEventListener('submit', (e) => {
         e.preventDefault();
+        
+        const newPassword = document.getElementById('settings-new-password').value;
+        const confirmPassword = document.getElementById('settings-confirm-password').value;
+
+        if (newPassword !== confirmPassword) {
+            alert('Passwords do not match. Please try again.');
+            return;
+        }
+
+        // Save new password to local storage
+        currentAdminPassword = newPassword;
+        localStorage.setItem('admin_password', currentAdminPassword);
+
         e.target.reset();
-        alert('Password updated successfully!');
+        alert('Password updated successfully! You will use this password next time you login.');
     });
 
 });
