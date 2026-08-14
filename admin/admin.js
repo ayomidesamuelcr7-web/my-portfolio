@@ -1,9 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize EmailJS
-    if (typeof emailjs !== 'undefined') {
-        emailjs.init("wV_3uog0MfiqwuYiq");
-    }
-
+document.addEventListener('DOMContentLoaded', async () => {
     const SUPABASE_URL = 'https://rfcotftdxmjsoilekran.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_wYBjlZZhtZraifP6-7lM_A_96aGzdSH';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -14,44 +9,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const loginError = document.getElementById('login-error');
     const logoutBtn = document.getElementById('logout-btn');
+    const navLogout = document.getElementById('nav-logout');
+
+    let session = null;
 
     // 1. Authentication Logic
-    const isAuthenticated = localStorage.getItem('admin_auth') === 'true';
+    const { data: { session: initialSession } } = await supabaseClient.auth.getSession();
+    session = initialSession;
 
-    // Fetch dynamic credentials from localStorage or use defaults
-    let currentAdminEmail = localStorage.getItem('admin_email') || 'admin@example.com';
-    let currentAdminPassword = localStorage.getItem('admin_password') || 'admin123';
-
-    // Populate the settings form with current email when app starts
     const settingsEmailInput = document.getElementById('settings-email');
-    if (settingsEmailInput) {
-        settingsEmailInput.value = currentAdminEmail;
+
+    function updateSessionData() {
+        if (session && session.user && settingsEmailInput) {
+            settingsEmailInput.value = session.user.email;
+        }
     }
 
-    if (isAuthenticated) {
+    if (session) {
+        updateSessionData();
         showApp();
+    } else {
+        loginOverlay.style.display = 'flex';
+        adminApp.style.display = 'none';
     }
 
-    loginForm.addEventListener('submit', (e) => {
+    supabaseClient.auth.onAuthStateChange((event, newSession) => {
+        session = newSession;
+        if (event === 'SIGNED_OUT') {
+            loginOverlay.style.display = 'flex';
+            adminApp.style.display = 'none';
+        } else if (event === 'SIGNED_IN') {
+            updateSessionData();
+            showApp();
+        }
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const emailInput = document.getElementById('email-login').value;
         const pwd = passwordInput.value;
+        const btn = loginForm.querySelector('button');
         
-        if (emailInput === currentAdminEmail && pwd === currentAdminPassword) {
-            localStorage.setItem('admin_auth', 'true');
-            showApp();
-        } else {
-            // Fixed security issue: never reveal the expected credentials in the error message!
+        btn.textContent = 'Logging in...';
+        btn.disabled = true;
+
+        const { error } = await supabaseClient.auth.signInWithPassword({
+            email: emailInput,
+            password: pwd,
+        });
+
+        btn.textContent = 'Login to Dashboard';
+        btn.disabled = false;
+
+        if (error) {
             loginError.textContent = 'Incorrect email or password.';
             passwordInput.value = '';
         }
     });
 
-    logoutBtn.addEventListener('click', (e) => {
+    const handleLogout = async (e) => {
         e.preventDefault();
-        localStorage.removeItem('admin_auth');
-        window.location.reload();
-    });
+        await supabaseClient.auth.signOut();
+    };
+
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+    if (navLogout) navLogout.addEventListener('click', handleLogout);
 
     function showApp() {
         loginOverlay.style.display = 'none';
@@ -249,67 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Verification Logic ---
-    const verifyModalUI = document.getElementById('verify-modal');
-    const verifyModalTitle = document.getElementById('verify-modal-title');
-    const verifyModalDesc = document.getElementById('verify-modal-desc');
-    const verifyCodeInput = document.getElementById('verify-code-input');
-    const verifyError = document.getElementById('verify-error');
-    const btnCancelVerify = document.getElementById('btn-cancel-verify');
-    const btnSubmitVerify = document.getElementById('btn-submit-verify');
-    
-    let expectedVerifyCode = '';
-    let verifySuccessCallback = null;
-    
-    function openVerification(emailToVerify, title, callback) {
-        expectedVerifyCode = Math.floor(1000 + Math.random() * 9000).toString();
-        verifyModalTitle.textContent = title;
-        verifyModalDesc.textContent = `Enter the 4-digit code sent to ${emailToVerify}`;
-        verifyCodeInput.value = '';
-        verifyError.style.display = 'none';
-        verifySuccessCallback = callback;
-        
-        verifyModalUI.style.display = 'flex';
-        
-        // Send real email via EmailJS
-        emailjs.send("service_4u2cego", "template_wqmwmf2", {
-            to_email: emailToVerify,
-            code: expectedVerifyCode
-        }).then(
-            function(response) {
-                console.log("Verification email sent successfully!", response.status, response.text);
-            },
-            function(error) {
-                console.error("Failed to send verification email...", error);
-                alert("Failed to send verification email. Please check the console for details.");
-            }
-        );
-    }
-
-    if(btnCancelVerify) {
-        btnCancelVerify.addEventListener('click', () => {
-            verifyModalUI.style.display = 'none';
-        });
-    }
-
-    if(btnSubmitVerify) {
-        btnSubmitVerify.addEventListener('click', () => {
-            if (verifyCodeInput.value === expectedVerifyCode) {
-                verifyModalUI.style.display = 'none';
-                if (verifySuccessCallback) verifySuccessCallback();
-            } else {
-                verifyError.style.display = 'block';
-            }
-        });
-    }
-
     // Email Input UI Update
     const emailBadge = document.getElementById('email-verification-badge');
     const btnVerifyEmail = document.getElementById('btn-verify-email');
     
     if (settingsEmailInput) {
         settingsEmailInput.addEventListener('input', () => {
-            if (settingsEmailInput.value === currentAdminEmail) {
+            if (session && settingsEmailInput.value === session.user.email) {
                 if(emailBadge) emailBadge.style.display = 'inline-block';
                 if(btnVerifyEmail) btnVerifyEmail.style.display = 'none';
             } else {
@@ -319,32 +287,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (btnVerifyEmail) {
-            btnVerifyEmail.addEventListener('click', () => {
+            btnVerifyEmail.addEventListener('click', async () => {
                 const newEmail = settingsEmailInput.value;
-                if (!newEmail || newEmail === currentAdminEmail) return;
+                if (!newEmail || (session && newEmail === session.user.email)) return;
                 
-                // Step 1: Verify current email (authorize change)
-                openVerification(currentAdminEmail, 'Authorize Change', () => {
-                    // Step 2: Verify new email (confirm ownership)
-                    setTimeout(() => {
-                        openVerification(newEmail, 'Verify New Email', () => {
-                            currentAdminEmail = newEmail;
-                            localStorage.setItem('admin_email', currentAdminEmail);
-                            
-                            if(emailBadge) emailBadge.style.display = 'inline-block';
-                            btnVerifyEmail.style.display = 'none';
-                            
-                            const btn = document.querySelector('#settings-form button');
-                            const origText = btn.textContent;
-                            btn.textContent = 'Email Verified & Saved!';
-                            btn.style.backgroundColor = '#10b981';
-                            setTimeout(() => {
-                                btn.textContent = origText;
-                                btn.style.backgroundColor = '';
-                            }, 2000);
-                        });
-                    }, 500);
-                });
+                btnVerifyEmail.textContent = 'Sending link...';
+                
+                const { error } = await supabaseClient.auth.updateUser({ email: newEmail });
+                
+                btnVerifyEmail.textContent = 'Verify';
+                
+                if (error) {
+                    alert('Error updating email: ' + error.message);
+                    return;
+                }
+                
+                alert('A confirmation link has been sent to your new email address. Please click it to verify.');
             });
         }
     }
@@ -352,14 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Forms (Settings)
     document.getElementById('settings-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        const newEmail = settingsEmailInput ? settingsEmailInput.value : currentAdminEmail;
-
-        if (newEmail !== currentAdminEmail) {
-            alert('Please verify the new email address by clicking the Verify button before saving.');
-            return;
-        }
-
         const btn = e.target.querySelector('button');
         btn.textContent = 'Saved!';
         btn.style.backgroundColor = '#10b981'; // Green
@@ -369,29 +319,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 
-    document.getElementById('security-form').addEventListener('submit', (e) => {
+    document.getElementById('security-form').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const btn = e.target.querySelector('button');
         
         const oldPassword = document.getElementById('settings-old-password').value;
         const newPassword = document.getElementById('settings-new-password').value;
         const confirmPassword = document.getElementById('settings-confirm-password').value;
-
-        if (oldPassword !== currentAdminPassword) {
-            alert('Incorrect old password. Please try again.');
-            return;
-        }
 
         if (newPassword !== confirmPassword) {
             alert('Passwords do not match. Please try again.');
             return;
         }
 
-        // Save new password to local storage
-        currentAdminPassword = newPassword;
-        localStorage.setItem('admin_password', currentAdminPassword);
+        btn.textContent = 'Updating...';
+        btn.disabled = true;
 
-        e.target.reset();
-        alert('Password updated successfully! You will use this password next time you login.');
+        // Verify old password by attempting to sign in
+        const { error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: session.user.email,
+            password: oldPassword,
+        });
+
+        if (signInError) {
+            alert('Incorrect old password. Please try again.');
+            btn.textContent = 'Update Password';
+            btn.disabled = false;
+            return;
+        }
+
+        // Proceed to update password
+        const { error: updateError } = await supabaseClient.auth.updateUser({
+            password: newPassword
+        });
+
+        btn.textContent = 'Update Password';
+        btn.disabled = false;
+
+        if (updateError) {
+            alert('Error updating password: ' + updateError.message);
+        } else {
+            e.target.reset();
+            alert('Password updated successfully!');
+        }
     });
 
 });
