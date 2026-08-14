@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    const SUPABASE_URL = 'https://rfcotftdxmjsoilekran.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_wYBjlZZhtZraifP6-7lM_A_96aGzdSH';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const loginOverlay = document.getElementById('login-overlay');
     const adminApp = document.getElementById('admin-app');
     const loginForm = document.getElementById('login-form');
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showApp() {
         loginOverlay.style.display = 'none';
         adminApp.style.display = 'flex';
-        renderMessages();
+        fetchMessages();
     }
 
     // 2. SPA Navigation Logic
@@ -68,57 +71,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. Dummy Data Rendering (Messages)
-    const dummyMessages = [
-        {
-            id: 1,
-            name: 'Sarah Jenkins',
-            email: 'sarah.j@startup.io',
-            service: 'UI/UX Design',
-            date: 'Today, 10:42 AM',
-            status: 'new',
-            subject: 'App Redesign Project',
-            message: 'Hi Adetayo! We are a fintech startup looking to revamp our mobile app experience. We love your work on Quiklyy and would love to discuss a potential collaboration. Are you available for a quick chat next week?'
-        },
-        {
-            id: 2,
-            name: 'Mark T.',
-            email: 'markt88@gmail.com',
-            service: 'Web Development',
-            date: 'Yesterday',
-            status: 'new',
-            subject: 'Portfolio site needed',
-            message: 'I need a fast, minimal portfolio site for my photography business. Do you handle both design and development for small projects like this?'
-        },
-        {
-            id: 3,
-            name: 'Elena Rostova',
-            email: 'elena@creative-agency.co',
-            service: 'Product Design',
-            date: 'Aug 10',
-            status: 'read',
-            subject: 'Freelance role',
-            message: 'Hello, our agency is looking for a freelance product designer to help out with an overflow of client work for the next 3 months. Let me know if you have capacity.'
-        }
-    ];
-
+    // 3. Data Rendering (Messages from Supabase)
+    let messagesData = [];
     const messagesTbody = document.getElementById('messages-tbody');
     const messageModal = document.getElementById('message-modal');
     const closeModal = document.querySelector('.close-modal');
 
+    async function fetchMessages() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('messages')
+                .select('*')
+                .order('created_at', { ascending: false });
+                
+            if (error) throw error;
+            
+            messagesData = data || [];
+            
+            // Update total messages metric
+            const totalMessagesElement = document.querySelector('.metric-card:nth-child(2) h3');
+            if (totalMessagesElement) {
+                totalMessagesElement.textContent = messagesData.length;
+            }
+            
+            // Update unread badge
+            const unreadCount = messagesData.filter(m => m.status === 'new').length;
+            const badge = document.querySelector('.sidebar-nav .badge');
+            if (badge) {
+                badge.textContent = unreadCount;
+                badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+            }
+            
+            renderMessages();
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            messagesTbody.innerHTML = '<tr><td colspan="5">Error loading messages.</td></tr>';
+        }
+    }
+
     function renderMessages() {
         messagesTbody.innerHTML = '';
         
-        dummyMessages.forEach(msg => {
+        if (messagesData.length === 0) {
+            messagesTbody.innerHTML = '<tr><td colspan="5">No messages yet.</td></tr>';
+            return;
+        }
+        
+        messagesData.forEach(msg => {
             const tr = document.createElement('tr');
             
             const statusClass = msg.status === 'new' ? 'new' : 'read';
             const statusText = msg.status === 'new' ? 'New' : 'Read';
+            
+            // Format date safely
+            let dateStr = 'Unknown date';
+            if (msg.created_at) {
+                const date = new Date(msg.created_at);
+                dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            }
 
             tr.innerHTML = `
                 <td><strong>${msg.name}</strong></td>
                 <td>${msg.service}</td>
-                <td>${msg.date}</td>
+                <td>${dateStr}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td><button class="view-btn" data-id="${msg.id}">View Details</button></td>
             `;
@@ -128,34 +143,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add event listeners to view buttons
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.getAttribute('data-id'));
+                const id = e.target.getAttribute('data-id');
                 openMessageModal(id);
             });
         });
     }
 
-    function openMessageModal(id) {
-        const msg = dummyMessages.find(m => m.id === id);
+    async function openMessageModal(id) {
+        const msg = messagesData.find(m => m.id.toString() === id.toString());
         if (!msg) return;
 
-        document.getElementById('modal-subject').textContent = msg.subject;
+        document.getElementById('modal-subject').textContent = `New inquiry regarding ${msg.service}`;
         document.getElementById('modal-name').textContent = msg.name;
         document.getElementById('modal-email').textContent = msg.email;
         document.getElementById('modal-service').textContent = msg.service;
         document.getElementById('modal-message').textContent = msg.message;
-        document.getElementById('modal-reply').setAttribute('href', `mailto:${msg.email}?subject=Re: ${msg.subject}`);
+        document.getElementById('modal-reply').setAttribute('href', `mailto:${msg.email}?subject=Re: Inquiry about ${msg.service}`);
 
         messageModal.style.display = 'flex';
 
-        // Mark as read in our dummy data
+        // Mark as read in Supabase if new
         if (msg.status === 'new') {
-            msg.status = 'read';
-            renderMessages();
-            
-            // Update badge count
-            const badge = document.querySelector('.sidebar-nav .badge');
-            let count = parseInt(badge.textContent);
-            if (count > 0) badge.textContent = count - 1;
+            try {
+                const { error } = await supabaseClient
+                    .from('messages')
+                    .update({ status: 'read' })
+                    .eq('id', msg.id);
+                    
+                if (error) throw error;
+                
+                // Update local state to avoid refetching immediately
+                msg.status = 'read';
+                
+                // Re-render to update badges and table
+                renderMessages();
+                
+                // Update badge count
+                const unreadCount = messagesData.filter(m => m.status === 'new').length;
+                const badge = document.querySelector('.sidebar-nav .badge');
+                if (badge) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+                }
+            } catch (error) {
+                console.error('Error updating message status:', error);
+            }
         }
     }
 

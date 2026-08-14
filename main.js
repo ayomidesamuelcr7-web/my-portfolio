@@ -94,4 +94,58 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('fade-in');
         observer.observe(el);
     });
+    /* ==========================================================================
+       Supabase Integration
+       ========================================================================== */
+    const SUPABASE_URL = 'https://rfcotftdxmjsoilekran.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_wYBjlZZhtZraifP6-7lM_A_96aGzdSH';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const serviceSelect = document.getElementById('service');
+            const service = serviceSelect.options[serviceSelect.selectedIndex].text;
+            const message = document.getElementById('message').value;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('messages')
+                    .insert([
+                        { name, email, service, message, status: 'new' }
+                    ]);
+
+                if (error) throw error;
+
+                btn.textContent = 'Message Sent!';
+                btn.style.backgroundColor = '#10b981';
+                contactForm.reset();
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = '';
+                    btn.disabled = false;
+                }, 3000);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                btn.innerHTML = 'Error! Try again.';
+                btn.style.backgroundColor = '#ef4444';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = '';
+                    btn.disabled = false;
+                }, 3000);
+            }
+        });
+    }
 });
