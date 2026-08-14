@@ -372,8 +372,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('security-form').addEventListener('submit', (e) => {
         e.preventDefault();
         
+        const oldPassword = document.getElementById('settings-old-password').value;
         const newPassword = document.getElementById('settings-new-password').value;
         const confirmPassword = document.getElementById('settings-confirm-password').value;
+
+        if (oldPassword !== currentAdminPassword) {
+            alert('Incorrect old password. Please try again.');
+            return;
+        }
 
         if (newPassword !== confirmPassword) {
             alert('Passwords do not match. Please try again.');
