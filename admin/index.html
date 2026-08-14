@@ -25,12 +25,17 @@
         <div class="login-box fade-in">
             <div class="logo-circle"></div>
             <h2>Admin Login</h2>
-            <p>Please enter your password to continue.</p>
+            <p>Please enter your credentials to continue.</p>
             <form id="login-form">
-                <div class="form-group">
+                <div class="form-group" style="text-align: left;">
+                    <label style="font-size: 0.85rem; margin-bottom: 0.25rem; display: block; color: var(--clr-text-muted);">Email Address</label>
+                    <input type="email" id="email-login" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label style="font-size: 0.85rem; margin-bottom: 0.25rem; display: block; color: var(--clr-text-muted);">Password</label>
                     <input type="password" id="password" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Login &rarr;</button>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">Login &rarr;</button>
             </form>
             <p id="login-error" class="error-msg"></p>
         </div>
@@ -83,52 +88,25 @@
 
                 <div class="metrics-grid">
                     <div class="metric-card">
-                        <div class="metric-icon"><i class="ph ph-eye"></i></div>
-                        <div class="metric-data">
-                            <h3>1,248</h3>
-                            <p>Profile Views</p>
-                        </div>
-                    </div>
-                    <div class="metric-card">
                         <div class="metric-icon"><i class="ph ph-envelope-simple"></i></div>
                         <div class="metric-data">
-                            <h3>24</h3>
+                            <h3 id="metric-total-messages">0</h3>
                             <p>Total Messages</p>
                         </div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-icon"><i class="ph ph-download-simple"></i></div>
+                        <div class="metric-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><i class="ph ph-bell"></i></div>
                         <div class="metric-data">
-                            <h3>86</h3>
-                            <p>Resume Downloads</p>
+                            <h3 id="metric-new-messages">0</h3>
+                            <p>New Messages</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="recent-activity">
-                    <h2>Recent Activity</h2>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon blue"><i class="ph ph-envelope-open"></i></div>
-                            <div class="activity-info">
-                                <h4>New message from John Doe</h4>
-                                <p>Just now</p>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon green"><i class="ph ph-download"></i></div>
-                            <div class="activity-info">
-                                <h4>Resume downloaded</h4>
-                                <p>2 hours ago</p>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon purple"><i class="ph ph-eye"></i></div>
-                            <div class="activity-info">
-                                <h4>100+ views today</h4>
-                                <p>5 hours ago</p>
-                            </div>
-                        </div>
+                    <h2>Recent Inquiries</h2>
+                    <div class="activity-list" id="recent-activity-list">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
             </section>

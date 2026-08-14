@@ -19,13 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        const emailInput = document.getElementById('email-login').value;
         const pwd = passwordInput.value;
         
-        if (pwd === 'admin123') {
+        if (emailInput === 'admin@example.com' && pwd === 'admin123') {
             localStorage.setItem('admin_auth', 'true');
             showApp();
         } else {
-            loginError.textContent = 'Incorrect password. Try admin123';
+            loginError.textContent = 'Incorrect email or password. Try admin@example.com / admin123';
             passwordInput.value = '';
         }
     });
@@ -88,18 +89,48 @@ document.addEventListener('DOMContentLoaded', () => {
             
             messagesData = data || [];
             
-            // Update total messages metric
-            const totalMessagesElement = document.querySelector('.metric-card:nth-child(2) h3');
+            // Update metrics
+            const totalMessagesElement = document.getElementById('metric-total-messages');
             if (totalMessagesElement) {
                 totalMessagesElement.textContent = messagesData.length;
             }
             
-            // Update unread badge
             const unreadCount = messagesData.filter(m => m.status === 'new').length;
+            const newMessagesElement = document.getElementById('metric-new-messages');
+            if (newMessagesElement) {
+                newMessagesElement.textContent = unreadCount;
+            }
+
+            // Update unread badge
             const badge = document.querySelector('.sidebar-nav .badge');
             if (badge) {
                 badge.textContent = unreadCount;
                 badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+            }
+            
+            // Populate Recent Activity
+            const activityList = document.getElementById('recent-activity-list');
+            if (activityList) {
+                activityList.innerHTML = '';
+                if (messagesData.length === 0) {
+                    activityList.innerHTML = '<div style="padding: 1.5rem; color: var(--clr-text-muted);">No recent inquiries.</div>';
+                } else {
+                    messagesData.slice(0, 3).forEach(msg => {
+                        const dateStr = new Date(msg.created_at).toLocaleDateString();
+                        const isNew = msg.status === 'new';
+                        activityList.innerHTML += `
+                            <div class="activity-item">
+                                <div class="activity-icon ${isNew ? 'blue' : 'green'}">
+                                    <i class="ph ${isNew ? 'ph-envelope-simple' : 'ph-envelope-open'}"></i>
+                                </div>
+                                <div class="activity-info">
+                                    <h4>${msg.name} regarding ${msg.service}</h4>
+                                    <p>${dateStr}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
             }
             
             renderMessages();
