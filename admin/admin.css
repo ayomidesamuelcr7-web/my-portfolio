@@ -599,4 +599,12 @@ a {
     .settings-card {
         padding: 1.5rem;
     }
+
+    .mobile-hamburger {
+        display: block;
+    }
+}
+
+.mobile-hamburger {
+    display: none;
 }
