@@ -35,7 +35,7 @@
             <a href="#contact">Contact</a>
         </nav>
 
-        <a href="#" class="btn btn-outline nav-resume">Resume &darr;</a>
+        <a href="#" class="btn btn-outline nav-resume">Resume <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16.004V17a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1M12 4.5v11m3.5-3.5L12 15.5L8.5 12" /></svg></a>
 
         <button class="mobile-menu-btn" aria-label="Toggle menu">
             <i class="ph ph-list"></i>
@@ -50,7 +50,7 @@
             <a href="#skills">Skills</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
-            <a href="#" class="btn btn-outline">Resume &darr;</a>
+            <a href="#" class="btn btn-outline">Resume <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16.004V17a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1M12 4.5v11m3.5-3.5L12 15.5L8.5 12" /></svg></a>
         </nav>
     </div>
 
@@ -76,7 +76,7 @@
             </p>
             <div class="hero-buttons">
                 <a href="#projects" class="btn btn-primary">Explore my work &darr;</a>
-                <a href="#projects" class="btn btn-outline dark">Explore work &rarr;</a>
+                <a href="#contact" class="btn btn-outline dark">Get in touch &rarr;</a>
             </div>
         </div>
     </section>
@@ -132,7 +132,8 @@
     </section>
 
     <!-- Skills & Capabilities Section -->
-    <section id="skills" class="skills-capabilities section-container">
+    <section id="skills" class="skills-capabilities">
+        <div class="section-container">
         <h2 class="section-title">Skills & Capabilities</h2>
 
         <!-- UI/UX Designer -->
@@ -203,6 +204,7 @@
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
     <!-- Tools Section -->
@@ -210,38 +212,38 @@
         <h2 class="section-title">Tools</h2>
         <div class="tools-grid">
             <div class="tool-item">
-                <i class="ph-fill ph-figma logo-icon figma"></i>
+                <img src="assets/figma.jpg.jpg" alt="Figma" class="tool-logo" style="transform: scale(1.5);">
                 <span>Figma</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-triangle logo-icon adalo"></i>
+                <img src="assets/Adalo.png" alt="Adalo" class="tool-logo" style="transform: scale(1.2);">
                 <span>Adalo</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-intersect logo-icon framer"></i>
+                <img src="assets/framer.jpg" alt="Framer" class="tool-logo" style="transform: scale(1.5);">
                 <span>Framer</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-github-logo logo-icon github"></i>
+                <img src="assets/Github.jpg" alt="Github" class="tool-logo" style="transform: scale(0.9);">
                 <span>Github</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-database logo-icon supabase"></i>
+                <img src="assets/Supabase.jpg" alt="Supabase" class="tool-logo" style="transform: scale(0.8);">
                 <span>Supabase</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-rocket logo-icon antigravity"></i>
+                <img src="assets/Google Antigravity.jpg" alt="Antigravity IDE" class="tool-logo" style="transform: scale(0.8);">
                 <span>Antigravity IDE</span>
             </div>
             <div class="tool-item">
-                <i class="ph-fill ph-pinterest-logo logo-icon pinterest"></i>
+                <img src="assets/Pinterest.jpg" alt="Pinterest" class="tool-logo" style="transform: scale(0.9);">
                 <span>Pinterest</span>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about section-container">
+    <section id="about" class="about">
         <div class="about-content">
             <h2 class="section-title">About Me</h2>
             <p class="about-text">
@@ -252,11 +254,38 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact section-container">
+    <section id="contact" class="contact">
         <div class="contact-content">
             <h2 class="contact-title">Let's work together.</h2>
             <p class="contact-subtitle">Currently available for freelance opportunities and full-time roles.</p>
-            <a href="mailto:hello@example.com" class="btn btn-primary contact-btn">Get in touch &rarr;</a>
+            
+            <form class="contact-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="service">Service Needed?</label>
+                    <select id="service" name="service" required>
+                        <option value="" disabled selected>Select a service...</option>
+                        <option value="ui-ux">UI/UX Design</option>
+                        <option value="web-dev">Web Development</option>
+                        <option value="product">Product Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">How I can help</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell me about your project..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary contact-btn btn-block">Send Message &rarr;</button>
+            </form>
         </div>
         
         <footer class="footer">
