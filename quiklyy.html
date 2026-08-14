@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIKLYY Case Study - Adetayo Samuel</title>
+
+    <!-- Google Fonts: Instrument Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="logo">
+            <a href="index.html">
+                <div class="logo-circle"></div>
+            </a>
+        </div>
+
+        <nav class="desktop-nav">
+            <a href="index.html#home">Home</a>
+            <a href="index.html#projects" class="active">Projects</a>
+            <a href="index.html#skills">Skills</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+
+        <a href="#" class="btn btn-outline nav-resume">Resume <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16.004V17a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1M12 4.5v11m3.5-3.5L12 15.5L8.5 12" /></svg></a>
+
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="ph ph-list"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav">
+            <a href="index.html#home">Home</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#skills">Skills</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="#" class="btn btn-outline">Resume</a>
+        </nav>
+    </div>
+
+    <!-- Case Study Hero -->
+    <section class="cs-hero">
+        <div class="cs-hero-content">
+            <span class="cs-category">Mobile App</span>
+            <h1 class="cs-title">QUIKLYY</h1>
+            <p class="cs-subtitle">A hyper-local app connecting consumers with discounted surplus food to reduce waste and save money.</p>
+            
+            <div class="cs-meta-grid">
+                <div class="cs-meta-item">
+                    <h4>Role</h4>
+                    <p>UI/UX Designer</p>
+                </div>
+                <div class="cs-meta-item">
+                    <h4>Timeline</h4>
+                    <p>8 Weeks</p>
+                </div>
+                <div class="cs-meta-item">
+                    <h4>Tools</h4>
+                    <p>Figma, Framer</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cs-hero-image">
+            <img src="assets/quiklyy-mockup.png" alt="Quiklyy App Screens">
+        </div>
+    </section>
+
+    <!-- The Problem & Solution -->
+    <section class="cs-section">
+        <div class="cs-split">
+            <div>
+                <h2 class="cs-section-title">The Challenge</h2>
+                <p class="cs-text">Every day, local restaurants and bakeries throw away perfectly good food simply because it wasn't sold by closing time. Meanwhile, students and budget-conscious individuals are constantly looking for affordable, high-quality meals.</p>
+                <p class="cs-text">The goal of Quiklyy was to bridge this gap by creating a hyper-local marketplace that allows businesses to upload their surplus inventory at a steep discount, giving users real-time notifications to claim the food before it goes to waste.</p>
+            </div>
+            <div class="cs-split-img" style="height: 300px; background: var(--clr-bg-alt); display: flex; align-items: center; justify-content: center; color: var(--clr-text-muted);">
+                [Placeholder Image: User Flow / Wireframe]
+            </div>
+        </div>
+
+        <div class="cs-split">
+            <div class="cs-split-img" style="height: 300px; background: var(--clr-bg-alt); display: flex; align-items: center; justify-content: center; color: var(--clr-text-muted);">
+                [Placeholder Image: High Fidelity Screen]
+            </div>
+            <div>
+                <h2 class="cs-section-title">The Solution</h2>
+                <p class="cs-text">We designed a frictionless, map-based interface that immediately shows users available deals within a 5-mile radius. By prioritizing speed and geolocation, users can secure a meal in under 3 taps.</p>
+                <p class="cs-text">For businesses, we created a simplified vendor dashboard that allows them to snap a photo, input the original and discounted price, and publish the listing in seconds, ensuring it doesn't interrupt their busy closing routines.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="cs-section" style="background: var(--clr-bg-alt); max-width: 100%; padding-top: 6rem; padding-bottom: 6rem;">
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <h2 class="cs-section-title text-center">Key Features</h2>
+            <div class="cs-features-grid">
+                <div class="cs-feature-card">
+                    <h3>Interactive Map View</h3>
+                    <p class="cs-text">A dynamic map that clusters nearby deals, allowing users to visually browse and filter by food type (e.g., Bakery, Groceries, Meals) instantly.</p>
+                </div>
+                <div class="cs-feature-card">
+                    <h3>Real-time Notifications</h3>
+                    <p class="cs-text">Users can "Favorite" specific local stores and receive push notifications the exact second a surplus deal goes live.</p>
+                </div>
+                <div class="cs-feature-card">
+                    <h3>One-Tap Reserving</h3>
+                    <p class="cs-text">To prevent food from being claimed and abandoned, we implemented a seamless integration with Apple Pay and Google Pay to reserve the meal.</p>
+                </div>
+                <div class="cs-feature-card">
+                    <h3>Vendor Dashboard</h3>
+                    <p class="cs-text">A robust set of tools for restaurant owners to track how much waste they've diverted and revenue they've recovered each month.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="cs-section">
+        <h2 class="cs-section-title">Outcome & Learnings</h2>
+        <p class="cs-text">Designing Quiklyy taught me the importance of designing for two completely different user personas simultaneously. The consumer app needed to feel fun, urgent, and highly visual, while the vendor app needed to be ruthlessly efficient and data-driven.</p>
+        <p class="cs-text">By reducing the friction on the vendor side, we ensured a steady supply of deals, which inherently solved the retention problem on the consumer side.</p>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cs-cta">
+        <h2 class="cs-cta-title">Ready to build something similar?</h2>
+        <a href="index.html#contact" class="btn btn-primary contact-btn">Let's work together &rarr;</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links" style="margin-bottom: 1rem;">
+            <a href="mailto:Ayomidesamuelcr7@gmail.com"><i class="ph ph-envelope-simple"></i> Ayomidesamuelcr7@gmail.com</a>
+            <a href="tel:+2349033704354"><i class="ph ph-phone"></i> +234 90 3370 4354</a>
+        </div>
+        <div class="footer-links">
+            <a href="#"><i class="ph ph-linkedin-logo"></i> LinkedIn</a>
+            <a href="#"><i class="ph ph-twitter-logo"></i> Twitter</a>
+            <a href="#"><i class="ph ph-dribbble-logo"></i> Dribbble</a>
+        </div>
+        <p class="copyright">&copy; 2026 Adetayo Samuel.</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
