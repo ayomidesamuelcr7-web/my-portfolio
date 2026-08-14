@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         verifyModalUI.style.display = 'flex';
         
         // Send real email via EmailJS
-        emailjs.send("service_wryi6iq", "template_wqmwmf2", {
+        emailjs.send("service_4u2cego", "template_wqmwmf2", {
             to_email: emailToVerify,
             code: expectedVerifyCode
         }).then(
