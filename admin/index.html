@@ -175,8 +175,14 @@
                                 <input type="text" value="Adetayo Samuel">
                             </div>
                             <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" id="settings-email" value="admin@example.com">
+                                <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span>Email Address</span>
+                                    <span id="email-verification-badge" style="font-size: 0.85rem; color: #10b981;"><i class="ph ph-check-circle" style="vertical-align: middle;"></i> Verified</span>
+                                </label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="email" id="settings-email" value="admin@example.com" style="flex: 1;">
+                                    <button type="button" id="btn-verify-email" class="btn btn-outline" style="padding: 0 1rem; display: none;">Verify</button>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Bio</label>
@@ -203,6 +209,23 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verify-modal" class="login-overlay" style="display: none; z-index: 1000;">
+        <div class="login-box fade-in" style="max-width: 400px; text-align: center; padding: 2.5rem 2rem;">
+            <div class="metric-icon" style="margin: 0 auto 1.5rem auto; background: rgba(59, 130, 246, 0.1); color: #3b82f6; width: 60px; height: 60px; font-size: 2rem;"><i class="ph ph-shield-check"></i></div>
+            <h2 id="verify-modal-title" style="margin-bottom: 0.5rem; font-size: 1.5rem;">Verify Email</h2>
+            <p id="verify-modal-desc" style="color: var(--clr-text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Enter the 4-digit code sent to your email.</p>
+            
+            <input type="text" id="verify-code-input" placeholder="0000" maxlength="4" style="text-align: center; font-size: 2rem; letter-spacing: 0.75rem; padding: 1rem; margin-bottom: 1rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
+            <p id="verify-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none;">Incorrect code. Please try again.</p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button type="button" id="btn-cancel-verify" class="btn btn-outline" style="flex: 1;">Cancel</button>
+                <button type="button" id="btn-submit-verify" class="btn btn-primary" style="flex: 1;">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <script src="/admin/admin.js"></script>

@@ -244,14 +244,106 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Verification Logic ---
+    const verifyModalUI = document.getElementById('verify-modal');
+    const verifyModalTitle = document.getElementById('verify-modal-title');
+    const verifyModalDesc = document.getElementById('verify-modal-desc');
+    const verifyCodeInput = document.getElementById('verify-code-input');
+    const verifyError = document.getElementById('verify-error');
+    const btnCancelVerify = document.getElementById('btn-cancel-verify');
+    const btnSubmitVerify = document.getElementById('btn-submit-verify');
+    
+    let expectedVerifyCode = '';
+    let verifySuccessCallback = null;
+    
+    function openVerification(emailToVerify, title, callback) {
+        expectedVerifyCode = Math.floor(1000 + Math.random() * 9000).toString();
+        verifyModalTitle.textContent = title;
+        verifyModalDesc.textContent = `Enter the 4-digit code sent to ${emailToVerify}`;
+        verifyCodeInput.value = '';
+        verifyError.style.display = 'none';
+        verifySuccessCallback = callback;
+        
+        verifyModalUI.style.display = 'flex';
+        
+        // Simulate email being sent
+        setTimeout(() => {
+            alert(`[SIMULATED EMAIL]\nTo: ${emailToVerify}\n\nYour verification code is: ${expectedVerifyCode}`);
+        }, 500);
+    }
+
+    if(btnCancelVerify) {
+        btnCancelVerify.addEventListener('click', () => {
+            verifyModalUI.style.display = 'none';
+        });
+    }
+
+    if(btnSubmitVerify) {
+        btnSubmitVerify.addEventListener('click', () => {
+            if (verifyCodeInput.value === expectedVerifyCode) {
+                verifyModalUI.style.display = 'none';
+                if (verifySuccessCallback) verifySuccessCallback();
+            } else {
+                verifyError.style.display = 'block';
+            }
+        });
+    }
+
+    // Email Input UI Update
+    const emailBadge = document.getElementById('email-verification-badge');
+    const btnVerifyEmail = document.getElementById('btn-verify-email');
+    
+    if (settingsEmailInput) {
+        settingsEmailInput.addEventListener('input', () => {
+            if (settingsEmailInput.value === currentAdminEmail) {
+                if(emailBadge) emailBadge.style.display = 'inline-block';
+                if(btnVerifyEmail) btnVerifyEmail.style.display = 'none';
+            } else {
+                if(emailBadge) emailBadge.style.display = 'none';
+                if(btnVerifyEmail) btnVerifyEmail.style.display = 'inline-block';
+            }
+        });
+
+        if (btnVerifyEmail) {
+            btnVerifyEmail.addEventListener('click', () => {
+                const newEmail = settingsEmailInput.value;
+                if (!newEmail || newEmail === currentAdminEmail) return;
+                
+                // Step 1: Verify current email (authorize change)
+                openVerification(currentAdminEmail, 'Authorize Change', () => {
+                    // Step 2: Verify new email (confirm ownership)
+                    setTimeout(() => {
+                        openVerification(newEmail, 'Verify New Email', () => {
+                            currentAdminEmail = newEmail;
+                            localStorage.setItem('admin_email', currentAdminEmail);
+                            
+                            if(emailBadge) emailBadge.style.display = 'inline-block';
+                            btnVerifyEmail.style.display = 'none';
+                            
+                            const btn = document.querySelector('#settings-form button');
+                            const origText = btn.textContent;
+                            btn.textContent = 'Email Verified & Saved!';
+                            btn.style.backgroundColor = '#10b981';
+                            setTimeout(() => {
+                                btn.textContent = origText;
+                                btn.style.backgroundColor = '';
+                            }, 2000);
+                        });
+                    }, 500);
+                });
+            });
+        }
+    }
+
     // Handle Forms (Settings)
     document.getElementById('settings-form').addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // Save new email to local storage
-        if (settingsEmailInput) {
-            currentAdminEmail = settingsEmailInput.value;
-            localStorage.setItem('admin_email', currentAdminEmail);
+        const newEmail = settingsEmailInput ? settingsEmailInput.value : currentAdminEmail;
+
+        if (newEmail !== currentAdminEmail) {
+            alert('Please verify the new email address by clicking the Verify button before saving.');
+            return;
         }
 
         const btn = e.target.querySelector('button');
