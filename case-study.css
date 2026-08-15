@@ -64,14 +64,13 @@
 }
 
 .cs-hero-image {
-    width: 100%;
+    width: 90%;
     max-width: 1200px;
     margin: 4rem auto 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--clr-border);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    padding: 0 var(--container-px);
 }
 
 .cs-hero-image img {
