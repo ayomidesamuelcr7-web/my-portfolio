@@ -168,3 +168,41 @@
         gap: 1.5rem;
     }
 }
+
+/* Masonry Gallery */
+.masonry-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+.masonry-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.masonry-col img {
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    border: 1px solid var(--clr-border);
+    transition: transform 0.3s ease;
+}
+
+.masonry-col img:hover {
+    transform: translateY(-5px);
+}
+
+@media (min-width: 768px) {
+    .masonry-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
+    .masonry-col:nth-child(2) {
+        margin-top: 5rem; /* Staggered middle column */
+    }
+}
