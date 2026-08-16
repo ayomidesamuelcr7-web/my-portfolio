@@ -84,7 +84,7 @@
 
 /* Content Sections */
 .cs-section {
-    padding: 6rem var(--container-px);
+    padding: 4rem var(--container-px);
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -107,7 +107,9 @@
     grid-template-columns: 1fr;
     gap: 4rem;
     align-items: center;
-    margin: 6rem 0;
+}
+.cs-split + .cs-split {
+    margin-top: 4rem;
 }
 
 @media (min-width: 768px) {
